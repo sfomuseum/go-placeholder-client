@@ -40,7 +40,6 @@ func main() {
 
 	cl, _ := client.NewPlaceholderClient(*endpoint)
 
-
 	for _, term := range flag.Args() {
 
 		results, _ := cl.Search(term, search_filters...)
