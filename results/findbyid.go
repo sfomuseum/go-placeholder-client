@@ -5,15 +5,12 @@ import (
 )
 
 /*
+
+TBD: the response value for findbyid queries is different than for search queries,
+specifically the "lineage" property:
+
 "101748479": {
-    "id": 101748479,
-    "name": "München",
-    "placetype": "locality",
-    "rank": {
-      "min": 9,
-      "max": 10
-    },
-    "population": 1260391,
+    ...
     "lineage": [
       {
         "continent_id": 102191581,
@@ -24,29 +21,35 @@ import (
         "region_id": 85682571
       }
     ],
-    "geom": {
-      "area": 0.031614,
-      "bbox": "11.382263,48.0634908248,11.7231562646,48.2282863287",
-      "lat": 48.152126,
-      "lon": 11.544467
-    },
-    "names": {
-      "afr": [
-        "München"
-      ],
+    ...
+}
+
+which results in the following:
+
+go run cmd/findbyid/main.go 85922583 101748479
+2019/08/23 22:44:48 GET http://localhost:3000/parser/findbyid?ids=85922583%2C101748479
+2019/08/23 22:44:48 json: cannot unmarshal number into Go struct field PlaceholderRecord.lineage of type results.PlaceholderRecord
+exit status 1
+
+so for today we're just interface{} -ing all the thing
+(20190823/thisisaaronland)
+
 */
 
+// type FindByIDResults map[string]PlaceholderRecord
 type FindByIDResults map[string]interface{}
 
+// func (s *FindByIDResults) Results() []PlaceholderRecord {
 func (s *FindByIDResults) Results() []interface{} {
 
-     results := make([]interface{}, 0)
-     
-     for _, v := range *s {
-     	 results = append(results, v)
-     }
-	 
-     return results
+	// results := make([]PlaceholderRecord, 0)
+	results := make([]interface{}, 0)
+
+	for _, v := range *s {
+		results = append(results, v)
+	}
+
+	return results
 }
 
 func NewFindByIDResults(body []byte) (*FindByIDResults, error) {

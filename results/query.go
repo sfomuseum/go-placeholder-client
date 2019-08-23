@@ -3,11 +3,11 @@ package results
 import (
 	"encoding/json"
 )
-	
+
 type QueryResults []int64
 
 func (s *QueryResults) Results() []int64 {
-     return *s
+	return *s
 }
 
 func NewQueryResults(body []byte) (*QueryResults, error) {

@@ -19,7 +19,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	ids := flag.Args()	
+	ids := flag.Args()
 
 	results, err := cl.FindById(ids...)
 

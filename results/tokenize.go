@@ -1,13 +1,13 @@
 package results
 
 import (
-       "encoding/json"
+	"encoding/json"
 )
 
-type TokenizeResults [][]*string
+type TokenizeResults [][]string
 
-func (t *TokenizeResults) Results() [][]*string {
-     return *t
+func (t *TokenizeResults) Results() [][]string {
+	return *t
 }
 
 func NewTokenizeResults(body []byte) (*TokenizeResults, error) {

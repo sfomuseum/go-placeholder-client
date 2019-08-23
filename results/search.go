@@ -1,16 +1,16 @@
 package results
 
 import (
-       "encoding/json"
+	"encoding/json"
 )
 
 type SearchResults []*PlaceholderRecord
 
 func (s *SearchResults) Results() []*PlaceholderRecord {
-     return *s
+	return *s
 }
-     
-func NewSearchResults(body []byte) (*SearchResults, error){
+
+func NewSearchResults(body []byte) (*SearchResults, error) {
 
 	var search_results *SearchResults
 	err := json.Unmarshal(body, &search_results)

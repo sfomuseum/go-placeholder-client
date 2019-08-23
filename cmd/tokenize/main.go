@@ -28,7 +28,10 @@ func main() {
 		}
 
 		for _, r := range results.Results() {
-			fmt.Println(r)
+
+			for _, t := range r {
+				fmt.Println(t)
+			}
 		}
 	}
 }
