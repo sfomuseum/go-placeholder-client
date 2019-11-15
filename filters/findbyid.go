@@ -6,27 +6,27 @@ import (
 	"strings"
 )
 
-type SearchFilter struct {
+type FindByIdFilter struct {
 	Filter
 	key   string
 	value string
 }
 
-func (f *SearchFilter) Key() string {
+func (f *FindByIdFilter) Key() string {
 	return f.key
 }
 
-func (f *SearchFilter) Value() string {
+func (f *FindByIdFilter) Value() string {
 	return f.value
 }
 
-type SearchFilters []Filter
+type FindByIdFilters []Filter
 
-func (f *SearchFilters) String() string {
+func (f *FindByIdFilters) String() string {
 	return fmt.Sprintf("%v", *f)
 }
 
-func (f *SearchFilters) Set(value string) error {
+func (f *FindByIdFilters) Set(value string) error {
 
 	value = strings.Trim(value, " ")
 	kv := strings.Split(value, "=")
@@ -36,13 +36,13 @@ func (f *SearchFilters) Set(value string) error {
 	}
 
 	switch kv[0] {
-	case "lang", "placetype", "mode":
+	case "lang":
 		// pass
 	default:
-		return errors.New("Invalid search filter")
+		return errors.New("Invalid findbyid filter")
 	}
 
-	sf := SearchFilter{
+	sf := FindByIdFilter{
 		key:   kv[0],
 		value: kv[1],
 	}
