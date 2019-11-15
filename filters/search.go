@@ -26,7 +26,8 @@ func NewSearchFilter(key string, value string) (Filter, error) {
 	case "lang", "placetype", "mode":
 		// pass
 	default:
-		return nil, errors.New("Invalid search filter")
+		msg := fmt.Sprintf("Invalid search filter '%s'", key)
+		return nil, errors.New(msg)
 	}
 
 	sf := SearchFilter{
