@@ -20,6 +20,23 @@ func (f *FindByIdFilter) Value() string {
 	return f.value
 }
 
+func NewFindByIdFilter(key string, value string) (Filter, error) {
+
+	switch key {
+	case "lang":
+		// pass
+	default:
+		return nil, errors.New("Invalid search filter")
+	}
+
+	ff := FindByIdFilter{
+		key:   key,
+		value: value,
+	}
+
+	return &ff, nil
+}
+
 type FindByIdFilters []Filter
 
 func (f *FindByIdFilters) String() string {
@@ -35,18 +52,12 @@ func (f *FindByIdFilters) Set(value string) error {
 		return errors.New("Invalid search filter")
 	}
 
-	switch kv[0] {
-	case "lang":
-		// pass
-	default:
-		return errors.New("Invalid findbyid filter")
+	ff, err := NewFindByIdFilter(kv[0], kv[1])
+
+	if err != nil {
+		return err
 	}
 
-	sf := FindByIdFilter{
-		key:   kv[0],
-		value: kv[1],
-	}
-
-	*f = append(*f, &sf)
+	*f = append(*f, ff)
 	return nil
 }

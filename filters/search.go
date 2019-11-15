@@ -20,6 +20,23 @@ func (f *SearchFilter) Value() string {
 	return f.value
 }
 
+func NewSearchFilter(key string, value string) (Filter, error) {
+
+	switch key {
+	case "lang", "placetype", "mode":
+		// pass
+	default:
+		return nil, errors.New("Invalid search filter")
+	}
+
+	sf := SearchFilter{
+		key:   key,
+		value: value,
+	}
+
+	return &sf, nil
+}
+
 type SearchFilters []Filter
 
 func (f *SearchFilters) String() string {
@@ -35,18 +52,12 @@ func (f *SearchFilters) Set(value string) error {
 		return errors.New("Invalid search filter")
 	}
 
-	switch kv[0] {
-	case "lang", "placetype", "mode":
-		// pass
-	default:
-		return errors.New("Invalid search filter")
+	sf, err := NewSearchFilter(kv[0], kv[1])
+
+	if err != nil {
+		return err
 	}
 
-	sf := SearchFilter{
-		key:   kv[0],
-		value: kv[1],
-	}
-
-	*f = append(*f, &sf)
+	*f = append(*f, sf)
 	return nil
 }
